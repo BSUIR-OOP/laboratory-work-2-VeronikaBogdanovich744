@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Controls;
 
-namespace FiguresLR1
+namespace OOP_LR2_V2.FiguresLR1
 {
-    class Triangle : BaseFigure
+    public class Triangle : BaseFigure
     {
-        private int x1,y1; 
+        private int x1, y1;
         private int x2, y2;
         private int x3, y3;
 
@@ -21,7 +24,6 @@ namespace FiguresLR1
 
         public Triangle(int x1, int y1, int x2, int y2, int x3, int y3)
         {
-            id = ++index;
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
@@ -29,32 +31,33 @@ namespace FiguresLR1
             this.x3 = x3;
             this.y3 = y3;
         }
-        public Triangle()
-        {
-            id = ++index;
-        }
+
+        public Triangle(Point point1, Point point2) :
+       this(
+           (int)(point1.X),
+           (int)(point1.Y),
+           (int)(point2.X),
+           (int)(point2.Y),
+           (int)(point1.X - (point1.X - point2.X) / 2),
+           (int)(point1.Y)
+       )
+        { }
 
         public override string FigureName() { return "трегуольник"; }
         public override void ShowFigure()
         {
             Console.WriteLine(
-                $"Это {FigureName()} с координатами({x1},{y1}),({x2},{y2}),({x3},{y3})");
+                $"Это {FigureName()} с координатами({x1},{y1}),({x2},{y2}),({x3},{y3}) \n");
+            Console.WriteLine();
         }
-
-        public override void changeAllCoordinatesConsole()
+        public override void drawCanvas(Canvas canvas)
         {
-            Console.Write("x1 => ");
-            x1 = int.Parse(Console.ReadLine());
-            Console.Write("y1 => ");
-            y1 = int.Parse(Console.ReadLine());
-            Console.Write("x2 => ");
-            x2 = int.Parse(Console.ReadLine());
-            Console.Write("y2 => ");
-            y2 = int.Parse(Console.ReadLine());
-            Console.Write("x3 => ");
-            x3 = int.Parse(Console.ReadLine());
-            Console.Write("y3 => ");
-            y3 = int.Parse(Console.ReadLine());
+            var myLine = drawLine(x1, x2, y1, y2);
+            canvas.Children.Add(myLine);
+            myLine = drawLine(x2, x3, y2, y3);
+            canvas.Children.Add(myLine);
+            myLine = drawLine(x1, x3, y1, y3);
+            canvas.Children.Add(myLine);
         }
     }
 }
